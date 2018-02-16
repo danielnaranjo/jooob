@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dublinjob;
+use App\Models\Company;
+use App\Models\Candidate;
+use App\Models\Metric;
+
 //use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -28,8 +32,24 @@ class JobsController extends Controller
     public function index()
     {
         $data['results'] = Dublinjob::all();
+        $data['total'] = count($data['results']);
         if (Request::isJson()) {
-            $data['user'] = Request::header();
+            //$data['user'] = Request::header();
+            if(Request::header('email')){
+                $data['user'] = Request::header('user');
+                $data['email'] = Request::header('email');
+                if(Request::header('email')){
+                    $data['user'] = Request::header('user');
+                    $data['email'] = Request::header('email');
+                    $added = Candidate::firstOrNew( array( 'email' => Request::header('email') ) );
+                    $added->name = Request::header('user');
+                    $added->city = Request::header('city');
+                    $added->province = Request::header('province');
+                    $added->country = Request::header('country');
+                    $added->stack = Request::header('stack');
+                    $added->save();
+                }
+            }
         }
         return response()->json($data);
     }
@@ -40,15 +60,26 @@ class JobsController extends Controller
      * @param  \App\Jobs  $jobs
      * @return \Illuminate\Http\Response
      */
-    public function show($pID)
+    public function show($id)
     {
         /*
             cURL http://127.0.0.1:8080/api/jobs/1000 -H user:'daniel naranjo' -H mail:d@d.com
         */
-        $data['results'] = Dublinjob::find($pID);
-        $data['total'] = count($data['results']);
+        $data['results'] = Dublinjob::find($id);
         if (Request::isJson()) {
-            $data['user'] = Request::header();
+            //$data['user'] = Request::header();
+            if(Request::header('email')){
+                $data['user'] = Request::header('user');
+                $data['email'] = Request::header('email');
+                $added = Candidate::firstOrNew( array( 'email' => Request::header('email') ) );
+                $added->name = Request::header('user');
+                $added->city = Request::header('city');
+                $added->province = Request::header('province');
+                $added->country = Request::header('country');
+                $added->stack = Request::header('stack');
+                $added->created_at = Date::now()->format('Y-m-d H:i:s');
+                $added->save();
+            }
         }
         return response()->json($data);
     }
@@ -58,11 +89,31 @@ class JobsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function search($terms)
+    public function search(Request $request)
     {
-        $data['results'] = Dublinjob::search( $query )->get();
+        $terms = Request::input('terms');
+        $data['results'] = Dublinjob::search( $terms )->get();
         $data['total'] = count($data['results']);
-        $data['user'] = Request::header();
+        if(Request::header('email')){
+            $data['user'] = Request::header('user');
+            $data['email'] = Request::header('email');
+            $added = Candidate::firstOrNew( array( 'email' => Request::header('email') ) );
+            $added->name = Request::header('user');
+            $added->city = Request::header('city');
+            $added->province = Request::header('province');
+            $added->country = Request::header('country');
+            $added->stack = Request::header('stack');
+            $added->created_at = Date::now()->format('Y-m-d H:i:s');
+            $added->save();
+        }
+        $searched = new Metric();
+        if(Request::header('email')){
+        $searched->user_id = Request::header('email');
+        }
+        $searched->fulltext = $data['results'];
+        $searched->job_id = $terms;
+        $searched->created_at = Date::now()->format('Y-m-d H:i:s');
+        $searched->save();
         return response()->json($data);
     }
 

@@ -181,7 +181,6 @@ return [
         Bogardo\Mailgun\MailgunServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
         Jenssegers\Date\DateServiceProvider::class,
-        Sargilla\Swagger\SwaggerServiceProvider::class,
         TCG\Voyager\VoyagerServiceProvider::class,
 
     ],

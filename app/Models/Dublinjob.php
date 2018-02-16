@@ -13,13 +13,8 @@ use Laravel\Scout\Searchable;
 /**
  * Class Dublinjob
  *
- * @property int pID
- * @property string $company
- * @property string $info
- * @property string $website
- * @property string $email
- * @property string $startup
- * @property string $logo
+ * @property int id
+ * @property string $company_id
  * @property string $jobtitle
  * @property string $description
  * @property string $contract
@@ -41,8 +36,9 @@ use Laravel\Scout\Searchable;
  */
 class Dublinjob extends Eloquent
 {
-	protected $primaryKey = 'pID';
+	protected $primaryKey = 'id';
 	public $timestamps = false;
+    use Searchable;
 
 	protected $dates = [
 		'validFrom',
@@ -50,6 +46,7 @@ class Dublinjob extends Eloquent
 	];
 
 	protected $fillable = [
+        'company_id',
 		'jobtitle',
 		'description',
 		'contract',
@@ -64,7 +61,6 @@ class Dublinjob extends Eloquent
 		'instructions',
 	];
     protected $hidden = [
-        'company',
 		'info',
 		'website',
 		'email',
@@ -75,4 +71,8 @@ class Dublinjob extends Eloquent
 		'paidoptions',
 		'status',
     ];
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company','company_id','company_id');
+    }
 }

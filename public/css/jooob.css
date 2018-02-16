@@ -1,0 +1,29 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: 'Share Tech', sans-serif;
+    /*font-family: 'Sarpanch', sans-serif;*/
+}
+#wrapper {
+    padding: 5px;
+}
+.terminal {
+    position: absolute;
+    width: 90%;
+    height: 100%;
+    color: #008fff;
+}
+.terminal-line {
+    display: block;
+    /*margin-left: 20px;*/
+    /*margin-top: 6px;*/
+    letter-spacing: 2.5px;
+    font-size: 16px;
+}
+/* Based on: http://jsfiddle.net/umz8t/6490/ */
+.blink_me {
+    animation: blinker 1s linear infinite;
+}
+@keyframes blinker {
+    50% { opacity: 0; }
+}
