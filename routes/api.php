@@ -16,6 +16,23 @@ use Illuminate\Http\Response;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('v1')->group(function () {
+    Route::get('/', 'PublicController@index');
+    Route::resource('jobs', 'JobsController');
+    Route::resource('candidates', 'CandidateController');
+    Route::resource('company', 'CompanyController');
+    Route::resource('metrics', 'MetricController');
+    Route::post('search', 'JobsController@search');
+});
+
+Route::domain('start.jooob.info')->group(function () {
+    Route::get('/', 'PublicController@index');
+});
+
+// Route::resource('jobs', 'JobsController');
+// Route::post('/jobs/search', 'JobsController@search');
+
 //Route::resource('jobs', 'JobsController');
 //https://superuser.com/questions/149329/what-is-the-curl-command-line-syntax-to-do-a-post-request
 //Route::post('/user','JobsController@index');
