@@ -27,3 +27,7 @@ body {
 @keyframes blinker {
     50% { opacity: 0; }
 }
+.yellow {
+    background-color: yellow !important;
+    color: black !important;
+}
