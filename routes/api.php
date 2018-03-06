@@ -61,3 +61,7 @@ Route::domain('start.jooob.info')->group(function () {
 // Route::domain('api.localhost')->group(function () {
 //     Route::resource('jobs', 'JobsController');
 // });
+
+Route::prefix('private')->group(function () {
+    Route::get('/tasks', 'PublicController@indeed');
+});

@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema;
 use Illuminate\Support\Facades\Route;
-use Request;
 use Cookie;
 use Session;
 use Validator;
@@ -88,16 +87,27 @@ class PublicController extends Controller {
 	       $shorten=$p->url;//bitly_v3_shorten($p->url, $bitly_key, 'j.mp')
 
 	       // SQL Statement
-	       $Query="INSERT INTO dublinjobs VALUES (NULL, '0', '".$jobtitle."', '".$description."', 'Otros','Consultar', '".$location."', '".$location."','".$validFrom."', '".$validTo."','".$stack."','0','Consultar','Para aplicar debes hacer clic en el siguiente enlace: ".$shorten."','Loaded via API/CronJob/Indeed','".$ip."','0','1');";
-	       echo  $Query. '<br><br>'; // debug
+	       //$Query="INSERT INTO dublinjobs VALUES (NULL, '0', '".$jobtitle."', '".$description."', 'Otros','Consultar', '".$location."', '".$location."','".$validFrom."', '".$validTo."','".$stack."','0','Consultar','Para aplicar debes hacer clic en el siguiente enlace: ".$shorten."','Loaded via API/CronJob/Indeed','".$ip."','0','1');";
+	       //echo  $Query. '<br><br>'; // debug
 
            $added = new Dublinjob();
-           $added->name = Request::header('user');
-           $added->city = Request::header('city');
-           $added->province = Request::header('province');
-           $added->country = Request::header('country');
-           $added->stack = Request::header('stack');
-           $added->created_at = Date::now()->format('Y-m-d H:i:s');
+           $added->company_id = 0;
+           $added->jobtitle = $jobtitle;
+           $added->description = $description;
+           $added->contract = 'Consultar';
+           $added->location = 'Consultar';
+           $added->city = $location;
+           $added->country = 'Argentina';
+           $added->stack = $stack;
+           $added->validFrom = $validFrom;
+           $added->validTo = $validTo;
+           $added->salary = 0;
+           $added->equity = 0;
+           $added->instructions = 'Para aplicar debes hacer clic en el siguiente enlace: '.$shorten;
+           $added->marketing = 'Indeed';
+           $added->ip = '0.0.0.0';
+           $added->paidoptions = 0;
+           $added->status = 1;
            $added->save();
 	   }
 
