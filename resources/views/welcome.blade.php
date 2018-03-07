@@ -50,7 +50,7 @@
         </div>
         <div class="row">
             <div class="col-1 text-left">{{$logged}}</div>
-            <div class="col-10 text-left">{"results":[{"total":1051,"stack":"php,python,java,mondodb,ruby,rails,ec2,heroku,java","updated":"{{$updated}}"}]}</div>
+            <div class="col-10 text-left">{"results":[{"total":{{ $jobs }},"stack":"php,python,java,mondodb,ruby,rails,ec2,heroku,java","updated":"{{$updated}}"}]}</div>
         </div>
         <div class="row">
             <div class="col-1 text-left">{{$logged}}</div>

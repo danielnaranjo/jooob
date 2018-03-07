@@ -47,6 +47,7 @@ class JobsController extends Controller
                     $added->province = Request::header('province');
                     $added->country = Request::header('country');
                     $added->stack = Request::header('stack');
+                    $added->created_at = Date::now()->format('Y-m-d H:i:s');
                     $added->save();
                 }
             }

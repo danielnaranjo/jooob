@@ -51,7 +51,8 @@ class PublicController extends Controller {
             $searched->created_at = Date::now()->format('Y-m-d H:i:s');
             $searched->save();
         } else {
-            return view('welcome');
+            $data['jobs'] = Dublinjob::count();
+            return view('welcome', $data);
         }
     }
 
@@ -111,6 +112,32 @@ class PublicController extends Controller {
            $added->save();
 	   }
 
+    }
+
+    public function actividad(){
+        Date::setLocale('es');
+        $tiempo = "1 days";
+        $diaria = Date::now('America/Argentina/Buenos_Aires')->sub($tiempo)->format('Y-m-d H:i:s');
+        $trabajos = Dublinjob::where('validFrom', '>=', $diaria )->get();
+        $candidatos = Candidate::where('created_at', '>=', $diaria )->get();
+        $metricas= Metric::where('created_at', '>=', $diaria )->get();
+        $empresas = Company::where('created_at', '>=', $diaria )->get();
+        $fecha = Date::now('America/Argentina/Buenos_Aires')->format('l j F Y');
+        $inside = array(
+            'fecha' => $fecha,
+            'trabajos' => $trabajos,
+            'candidatos' => $candidatos,
+            'metricas' =>  $metricas,
+            'empresas' =>  $empresas,
+        );
+        $data['inside'] = $inside;
+
+        Mailgun::send('emails.actividad', $inside, function ($message) use ($inside){
+            $message->from("info@jooob.info", "Joel @ Operaciones");
+            $message->subject("[jooob] Actividad diaria: ".$inside['fecha']);
+            $message->tag(['tareas', 'diarias', 'administrativas']);
+            $message->to("daniel@loultimoenlaweb.com");
+        });
     }
 
 }
