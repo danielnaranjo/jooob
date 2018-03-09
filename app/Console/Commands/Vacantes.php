@@ -44,6 +44,24 @@ class Vacantes extends Command
      */
     public function handle()
     {
-        //
+        Log::info('**************');
+        Log::info('Vacantes: '.Date::now('America/Argentina/Buenos_Aires')->format('l j F Y H:m') );
+        Log::info('**************');
+        Date::setLocale('es');
+
+        // $fecha = Date::now('America/Argentina/Buenos_Aires')->format('l j F Y');
+        // $inside = array(
+        //     'fecha' => $fecha,
+        //     'trabajos' => $trabajos,
+        //     'candidatos' => $candidatos,
+        //     'metricas' =>  $metricas,
+        //     'empresas' =>  $empresas,
+        // );
+        // Mail::send('emails.actividad', $inside, function ($message) use ($inside){
+        //     $message->from("info@jooob.info", "Joel @ Operaciones");
+        //     $message->subject("[jooob] Actividad diaria: ".$inside['fecha']);
+        //     //$message->tag(['tareas', 'diarias', 'administrativas']);
+        //     $message->to("daniel@loultimoenlaweb.com");
+        // });
     }
 }

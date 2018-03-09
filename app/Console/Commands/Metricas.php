@@ -52,6 +52,10 @@ class Metricas extends Command
             'fecha' => $fecha,
             'metricas' =>  $metricas,
         );
+        Log::info('**************');
+        Log::info('Metricas: '.Date::now('America/Argentina/Buenos_Aires')->format('l j F Y H:m') );
+        Log::info('**************');
+
         Mailgun::send('emails.metricas', $inside, function ($message) use ($inside){
             $message->from("info@jooob.info", "Joel @ Operaciones");
             $message->subject("[jooob] Metricas al ".$inside['fecha']);

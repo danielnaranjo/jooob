@@ -62,7 +62,12 @@ class Actividad extends Command
             'metricas' =>  $metricas,
             'empresas' =>  $empresas,
         );
-        $data['inside'] = $inside;
+        Log::info('**************');
+        Log::info('INSIDE: trabajos     : '. count($trabajos));
+        Log::info('INSIDE: candidatos   : '. count($candidatos));
+        Log::info('INSIDE: metricas     : '. count($metricas));
+        Log::info('INSIDE: empresas     : '. count($empresas));
+        Log::info('**************');
 
         Mailgun::send('emails.actividad', $inside, function ($message) use ($inside){
             $message->from("info@jooob.info", "Joel @ Operaciones");

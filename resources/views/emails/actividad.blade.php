@@ -6,7 +6,7 @@
 <ul>
     @forelse ($trabajos as $trabajo)
     <li>
-        {!! $trabajo->jobtitle !!} : {!! $trabajo->jobtitle !!}
+        {!! $trabajo->id !!} : {!! $trabajo->jobtitle !!}
     </li>
     @empty
     <li>No hay información disponible</li>

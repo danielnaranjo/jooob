@@ -31,23 +31,24 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('tareas:indeedcom')
             ->timezone('America/Argentina/Buenos_Aires')
-            ->twiceDaily(8, 20);
+            ->twiceDaily(6, 12);
+            //->everyMinute();
         $schedule->command('tareas:actividad')
             ->timezone('America/Argentina/Buenos_Aires')
             ->dailyAt('23:00');
             //->everyMinute();
         $schedule->command('tareas:metricas')
             ->timezone('America/Argentina/Buenos_Aires')
-            ->monthlyOn(1, '11:00')
+            ->monthlyOn(1, '11:00');
             //->everyMinute();
         $schedule->command('envios:vacantes')
             ->timezone('America/Argentina/Buenos_Aires')
-            //->dailyAt('10:00');
-            ->everyMinute();
+            ->dailyAt('10:00');
+            //->everyMinute();
         $schedule->command('envios:semanal')
             ->timezone('America/Argentina/Buenos_Aires')
-            //->weekly();
-            ->everyMinute();
+            ->weekly();
+            //->everyMinute();
     }
 
     /**

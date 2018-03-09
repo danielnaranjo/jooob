@@ -16,6 +16,7 @@ use Mail;
 use Mailgun;
 use Helper;
 use Date;
+use Log;
 
 class Indeedcom extends Command
 {
@@ -67,6 +68,7 @@ class Indeedcom extends Command
 	   $json_string = file_get_contents($url);
 	   $parsed_json = json_decode($json_string);
 
+       $trabajos = [];
 	   foreach($parsed_json->results as $p){
 	       // Fields
 	       $validFrom = date("Y-m-d", strtotime($p->date));
@@ -97,6 +99,24 @@ class Indeedcom extends Command
            $added->paidoptions = 0;
            $added->status = 1;
            $added->save();
+           // Agrego info al mail
+           // Log::info('Indeed API: '.$jobtitle);
+           array_push($trabajos, array($jobtitle));
        }
+       Date::setLocale('es');
+       Log::info('**************');
+       Log::info('INDEED API request: '.Date::now('America/Argentina/Buenos_Aires')->format('l j F Y H:m') );
+       Log::info('**************');
+       $fecha = Date::now('America/Argentina/Buenos_Aires')->format('l j F Y H:m');
+       $inside = array(
+           'fecha' => $fecha,
+           'trabajos' => $trabajos,
+       );
+       Mailgun::send('emails.indeed', $inside, function ($message) use ($inside){
+           $message->from("info@jooob.info", "Joel @ Operaciones");
+           $message->subject("[jooob] Indeed API: ".$inside['fecha']);
+           $message->tag(['tareas', 'diarias', 'indeed']);
+           $message->to("daniel@loultimoenlaweb.com");
+       });
    }
 }
