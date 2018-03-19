@@ -162,4 +162,44 @@ class JobsController extends Controller
     {
         //
     }
+
+    public function sendme(Request $request) {
+        Date::setLocale('es');
+        $tiempo = "1 days";
+        $trabajos = Dublinjob::find($id);
+        $fecha = Date::now('America/Argentina/Buenos_Aires')->format('l j F Y');
+        $inside = array(
+            'fecha' => $fecha,
+            'trabajos' => $trabajos,
+            'email' => $email,
+        );
+        $data['inside'] = $inside;
+
+        Mailgun::send('emails.compartir', $inside, function ($message) use ($inside){
+            $message->from("info@jooob.info");
+            $message->subject("Te has enviado una vacante de jooob ");
+            $message->tag(['sendme', 'users']);
+            $message->to("daniel@loultimoenlaweb.com");
+        });
+    }
+
+    public function share(Request $request,$id) {
+        Date::setLocale('es');
+        $tiempo = "1 days";
+        $trabajos = Dublinjob::find($id);
+        $fecha = Date::now('America/Argentina/Buenos_Aires')->format('l j F Y');
+        $inside = array(
+            'fecha' => $fecha,
+            'trabajos' => $trabajos,
+            'email' => $email,
+        );
+        $data['inside'] = $inside;
+
+        Mailgun::send('emails.compartir', $inside, function ($message) use ($inside){
+            $message->from("info@jooob.info");
+            $message->subject("Te han compartido una vacante de jooob ");
+            $message->tag(['share', 'users']);
+            $message->to("daniel@loultimoenlaweb.com");
+        });
+    }
 }

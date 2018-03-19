@@ -16,9 +16,6 @@
 Route::get('/', 'PublicController@index');
 
 //Route::resource('jobs', 'JobsController');
-Route::group(['prefix' => 'admin'], function () {
-    Voyager::routes();
-});
 
 Route::domain('api.localhost')->group(function () {
     Route::get('/', 'PublicController@index');
